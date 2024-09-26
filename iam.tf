@@ -23,7 +23,7 @@ resource "aws_iam_role_policy_attachment" "ecs_node_role_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_ssm_policy" {
-  role       = aws_iam_role.ecs_instance_role.name
+  role       = aws_iam_role.ecs_node_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"  # Predefined SSM policy
 }
 
