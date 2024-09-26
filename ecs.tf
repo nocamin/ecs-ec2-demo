@@ -18,7 +18,7 @@ resource "aws_launch_template" "ecs_ec2" {
   network_interfaces {
     associate_public_ip_address = false  # No public IP
   # subnet_id                   = null   # Subnet specified in ASG
-    subnet_id                   = aws_subnet.public[count.index].id   # Subnet specified in ASG
+    subnet_id                   = aws_subnet.public[*].id   # Subnet specified in ASG
   }
   iam_instance_profile { arn = aws_iam_instance_profile.ecs_node.arn }
   monitoring { enabled = true }
