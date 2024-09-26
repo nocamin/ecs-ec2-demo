@@ -3,7 +3,7 @@
 resource "aws_autoscaling_group" "ecs" {
   name_prefix               = "demo-ecs-asg-"
   vpc_zone_identifier       = aws_subnet.public[*].id
-  min_size                  = 1
+  min_size                  = 2
   max_size                  = 3
   health_check_grace_period = 0
   health_check_type         = "EC2"
