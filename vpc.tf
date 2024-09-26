@@ -31,11 +31,11 @@ resource "aws_internet_gateway" "main" {
   tags   = { Name = "demo-igw" }
 }
 
-resource "aws_eip" "main" {
-  count      = local.azs_count
-  depends_on = [aws_internet_gateway.main]
-  tags       = { Name = "demo-eip-${local.azs_names[count.index]}" }
-}
+#resource "aws_eip" "main" {
+#  count      = local.azs_count
+#  depends_on = [aws_internet_gateway.main]
+#  tags       = { Name = "demo-eip-${local.azs_names[count.index]}" }
+#}
 
 
 # --- Public Route Table ---
