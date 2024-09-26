@@ -15,13 +15,19 @@ resource "aws_launch_template" "ecs_ec2" {
   image_id               = data.aws_ssm_parameter.ecs_node_ami.value
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.ecs_node_sg.id]
-
+  network_interfaces {
+    associate_public_ip_address = false  # No public IP
+    subnet_id                   = null   # Subnet specified in ASG
+  }
   iam_instance_profile { arn = aws_iam_instance_profile.ecs_node.arn }
   monitoring { enabled = true }
 
   user_data = base64encode(<<-EOF
       #!/bin/bash
       echo ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config;
+      yum install -y amazon-ssm-agent
+      systemctl enable amazon-ssm-agent
+      systemctl start amazon-ssm-agent
     EOF
   )
 }
