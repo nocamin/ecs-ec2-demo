@@ -15,28 +15,25 @@ resource "aws_launch_template" "ecs_ec2" {
   image_id               = data.aws_ssm_parameter.ecs_node_ami.value
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.ecs_node_sg.id]
- # network_interfaces {
- #   associate_public_ip_address = false  # No public IP
- #   subnet_id                   = null   # Subnet specified in ASG
- # }
+
   iam_instance_profile { arn = aws_iam_instance_profile.ecs_node.arn }
   monitoring { enabled = true }
+ 
 
   user_data = base64encode(<<-EOF
       #!/bin/bash
       echo ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config;
-      yum install -y amazon-ssm-agent
-      systemctl enable amazon-ssm-agent
-      systemctl start amazon-ssm-agent
+       yum install -y amazon-ssm-agent
+       systemctl enable amazon-ssm-agent
+       systemctl start amazon-ssm-agent
     EOF
   )
 }
 
-
 # --- ECS Task Definition ---
 
 resource "aws_ecs_task_definition" "app" {
-  family             = "nocping-demo-app"
+  family             = "nocping-app"
   task_role_arn      = aws_iam_role.ecs_task_role.arn
   execution_role_arn = aws_iam_role.ecs_exec_role.arn
   network_mode       = "awsvpc"
@@ -44,14 +41,14 @@ resource "aws_ecs_task_definition" "app" {
   memory             = 256
 
   container_definitions = jsonencode([{
-    name         = "app",
- #  image        = "${aws_ecr_repository.app.repository_url}:latest",
+    name         = "nocping",
+#   image        = "${aws_ecr_repository.app.repository_url}:latest",
     image        = "147997118683.dkr.ecr.us-east-1.amazonaws.com/dev/ecr01:latest",
     essential    = true,
     portMappings = [{ containerPort = 80, hostPort = 80 }],
 
     environment = [
-      { name = "EXAMPLE", value = "example" }
+      { name = "EXAMPLE", value = "nocping" }
     ]
 
     logConfiguration = {
@@ -59,7 +56,7 @@ resource "aws_ecs_task_definition" "app" {
       options = {
         "awslogs-region"        = "us-east-1",
         "awslogs-group"         = aws_cloudwatch_log_group.ecs.name,
-        "awslogs-stream-prefix" = "app"
+        "awslogs-stream-prefix" = "nocping"
       }
     },
   }])
