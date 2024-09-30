@@ -32,6 +32,7 @@ resource "aws_internet_gateway" "main" {
 
 resource "aws_eip" "main" {
   count      = local.azs_count
+  vpc        = true      # VPC based Elastic IP
   depends_on = [aws_internet_gateway.main]
   tags       = { Name = "demo-eip-${local.azs_names[count.index]}" }
 }

@@ -27,6 +27,36 @@ resource "aws_iam_role_policy_attachment" "ecs_ssm_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"  # Predefined SSM policy
 }
 
+resource "aws_iam_policy" "ecs_eip_assoc" {
+  name        = "EIPAssociationPolicy"
+  description = "Policy to allow EIP association to EC2 instances"
+  
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "ec2:AssociateAddress",
+          "ec2:DisassociateAddress",
+          "ec2:AllocateAddress",
+          "ec2:ReleaseAddress",
+          "ec2:DescribeAddresses",
+          "ec2:DescribeInstances",
+          "ec2:DescribeNetworkInterfaces"
+        ],
+        Effect   = "Allow",
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_eip_assoc" {
+  role       = aws_iam_role.ecs_node_role.name
+  policy_arn = aws_iam_policy.ecs_eip_assoc.arn  # Custom EIP policy
+}
+
+
 resource "aws_iam_instance_profile" "ecs_node" {
   name_prefix = "demo-ecs-node-profile"
   path        = "/ecs/instance/"

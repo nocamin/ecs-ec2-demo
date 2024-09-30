@@ -26,3 +26,13 @@ resource "aws_autoscaling_group" "ecs" {
     propagate_at_launch = true
   }
 }
+
+
+# --- EIP ASSOCIATION WITH EC2 ---
+
+resource "aws_eip_association" "ecs_eip_assoc" {
+  count         = local.azs_count
+  allocation_id = aws_eip.main[count.index].id
+  instance_id   = element(aws_autoscaling_group.ecs.instances, count.index)
+  depends_on    = [aws_autoscaling_group.ecs]
+}
