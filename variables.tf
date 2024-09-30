@@ -9,3 +9,9 @@ variable "environment" {
   type        = string
   default     = "prod"
 }
+
+variable "ecs_cluster_ami_name" {
+  description = "AMI name for the ECS host."
+  type        = string
+}
+
