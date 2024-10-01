@@ -30,10 +30,10 @@ resource "aws_launch_template" "ecs_ec2" {
        yum install -y amazon-ssm-agent
        systemctl enable amazon-ssm-agent
        systemctl start amazon-ssm-agent
-       amazon-linux-extras enable epel
-       yum install -y epel-release
-       yum install -y unzip awscli
-       aws s3 sync s3://${var.aws_region}-${var.environment}-app-bucket/certs   /opt/certs
+    #  amazon-linux-extras enable epel
+    #  yum install -y epel-release
+       yum install -y  awscli
+    #  aws s3 sync s3://${var.aws_region}-${var.environment}-app-bucket/certs   /opt/certs
 
     EOF
   )
@@ -50,10 +50,10 @@ resource "aws_ecs_task_definition" "app" {
   cpu                = 256
   memory             = 256
 
-  volume {
-    name      = "app-data"
-    host_path = "/opt/certs"
-  }
+#  volume {
+#    name      = "app-data"
+#    host_path = "/opt/certs"
+#  }
 
   container_definitions = jsonencode([{
     name         = "nocping",
@@ -77,14 +77,14 @@ resource "aws_ecs_task_definition" "app" {
       }
     ]
    
-     mountPoints = [
-        {
-          sourceVolume  = "app-data"
-          containerPath = "/var/certs"
-          readOnly      = true
-        }
-      ]
-       
+#     mountPoints = [
+#        {
+#          sourceVolume  = "app-data"
+#          containerPath = "/var/certs"
+#          readOnly      = true
+#        }
+#      ]
+#       
     logConfiguration = {
       logDriver = "awslogs",
       options = {
