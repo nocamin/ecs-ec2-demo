@@ -30,11 +30,7 @@ resource "aws_launch_template" "ecs_ec2" {
        yum install -y amazon-ssm-agent
        systemctl enable amazon-ssm-agent
        systemctl start amazon-ssm-agent
-    #  amazon-linux-extras enable epel
-    #  yum install -y epel-release
-       yum install -y  awscli
-    #  aws s3 sync s3://${var.aws_region}-${var.environment}-app-bucket/certs   /opt/certs
-
+       yum install -y awscli
     EOF
   )
 }
