@@ -4,8 +4,7 @@ resource "aws_autoscaling_group" "ecs" {
   name_prefix               = "demo-ecs-asg-"
   vpc_zone_identifier       = aws_subnet.public[*].id
   min_size                  = 1
-  max_size                  = 2
-# desired_capacity          = 1
+  max_size                  = 3
   health_check_grace_period = 0
   health_check_type         = "EC2"
   protect_from_scale_in     = false
@@ -45,8 +44,5 @@ resource "aws_eip_association" "ecs_eip_assoc" {
   count         = local.azs_count
   allocation_id = aws_eip.main[count.index].id
   instance_id   = element(data.aws_instances.asg_instances_data.ids, count.index)
-  depends_on = [
-    aws_autoscaling_group.ecs,   # Wait for ASG to be created
-    aws_eip.main                 # Ensure EIPs are created first
-  ]
+  depends_on    = [aws_autoscaling_group.ecs]
 }
