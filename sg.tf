@@ -9,7 +9,6 @@ resource "aws_security_group" "ecs_node_sg" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]  # Allow IPv6 traffic
   }
   
   egress {
@@ -17,7 +16,6 @@ resource "aws_security_group" "ecs_node_sg" {
     to_port     = 65535
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 }
 
@@ -34,7 +32,6 @@ resource "aws_security_group" "ecs_task" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }  
 
   ingress {
@@ -42,7 +39,6 @@ resource "aws_security_group" "ecs_task" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = [aws_vpc.main.cidr_block]
-    ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
   }
 
   egress {
@@ -50,7 +46,6 @@ resource "aws_security_group" "ecs_task" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 }
 

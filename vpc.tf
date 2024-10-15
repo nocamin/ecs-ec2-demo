@@ -9,7 +9,6 @@ locals {
 
 resource "aws_vpc" "main" {
   cidr_block           = "10.10.0.0/16"
-  assign_generated_ipv6_cidr_block = true 
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags                 = { Name = "demo-vpc" }
@@ -20,9 +19,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   availability_zone       = local.azs_names[count.index]
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 10 + count.index)
-  ipv6_cidr_block         = cidrsubnet(aws_vpc.main.ipv6_cidr_block, 8, count.index)
-  map_public_ip_on_launch = false
-  assign_ipv6_address_on_creation = true
+# map_public_ip_on_launch = true
   tags                    = { Name = "demo-public-${local.azs_names[count.index]}" }
 }
 

@@ -15,10 +15,10 @@ resource "aws_launch_template" "ecs_ec2" {
   image_id               = data.aws_ssm_parameter.ecs_node_ami.value
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.ecs_node_sg.id]
-  network_interfaces {
-     associate_public_ip_address = false  # Disable auto public IP assignment
-     security_groups = [aws_security_group.ecs_node_sg.id]
-  }
+ # network_interfaces {
+ #   associate_public_ip_address = false  # Disable auto public IP assignment
+ #   security_groups = [aws_security_group.ecs_node_sg.id]
+ # }
 
   iam_instance_profile { arn = aws_iam_instance_profile.ecs_node.arn }
   monitoring { enabled = true }
@@ -40,8 +40,8 @@ resource "aws_ecs_task_definition" "app" {
   family             = "nocping-app"
   task_role_arn      = aws_iam_role.ecs_task_role.arn
   execution_role_arn = aws_iam_role.ecs_exec_role.arn
-  network_mode       = "awsvpc"
-# network_mode       = "host"
+# network_mode       = "awsvpc"
+  network_mode       = "host"
   cpu                = 256
   memory             = 256
 
