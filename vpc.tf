@@ -3,7 +3,7 @@
 data "aws_availability_zones" "available" { state = "available" }
 
 locals {
-  azs_count = 2
+  azs_count = 1
   azs_names = data.aws_availability_zones.available.names
 }
 
@@ -20,7 +20,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   availability_zone       = local.azs_names[count.index]
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 10 + count.index)
-  ipv6_cidr_block = cidrsubnet(aws_vpc.main.ipv6_cidr_block, 8, count.index)
+  ipv6_cidr_block         = cidrsubnet(aws_vpc.main.ipv6_cidr_block, 8, count.index)
   map_public_ip_on_launch = false
   assign_ipv6_address_on_creation = true
   tags                    = { Name = "demo-public-${local.azs_names[count.index]}" }
