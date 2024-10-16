@@ -12,14 +12,8 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   assign_generated_ipv6_cidr_block = true
-# ipv6_cidr_block      = aws_vpc_ipv6_cidr_block_association.main.ipv6_cidr_block
+  ipv6_cidr_block      = aws_vpc_ipv6_cidr_block_association.main.ipv6_cidr_block
   tags                 = { Name = "demo-vpc" }
-}
-
-resource "aws_vpc_ipv6_cidr_block_association" "main" {
-  vpc_id     = aws_vpc.main.id
-  ipv6_pool  = "Amazon"
-  network_border_group = "us-east-1"
 }
 
 resource "aws_subnet" "public" {
@@ -27,7 +21,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   availability_zone       = local.azs_names[count.index]
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 10 + count.index)
-# ipv6_cidr_block         = cidrsubnet(aws_vpc_ipv6_cidr_block_association.main.ipv6_cidr_block, 8, 10 + count.index)
+  ipv6_cidr_block         = cidrsubnet(aws_vpc_ipv6_cidr_block_association.main.ipv6_cidr_block, 8, 10 + count.index)
   map_public_ip_on_launch = false
   assign_ipv6_address_on_creation = true
   tags                    = { Name = "demo-public-${local.azs_names[count.index]}" }
@@ -59,8 +53,8 @@ resource "aws_route_table" "public" {
   }
 
   route {
-    destination_ipv6_cidr_block = "::/0"
-    gateway_id                  = aws_internet_gateway.main.id
+    ipv6_cidr_block   = "::/0"
+    gateway_id        = aws_internet_gateway.main.id
   }
 }
 
