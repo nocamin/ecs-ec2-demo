@@ -12,7 +12,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   assign_generated_ipv6_cidr_block = true
-  ipv6_cidr_block      = aws_vpc_ipv6_cidr_block_association.main.ipv6_cidr_block
+# ipv6_cidr_block      = aws_vpc_ipv6_cidr_block_association.main.ipv6_cidr_block
   tags                 = { Name = "demo-vpc" }
 }
 
