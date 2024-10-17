@@ -31,6 +31,7 @@ resource "aws_launch_template" "ecs_ec2" {
 }
 
 # --- ECS Task Definition ---
+
 resource "aws_ecs_task_definition" "app" {
   family             = "nocping-app"
   task_role_arn      = aws_iam_role.ecs_task_role.arn
@@ -41,25 +42,14 @@ resource "aws_ecs_task_definition" "app" {
 
   container_definitions = jsonencode([{
     name         = "nocping",
+#   image        = "${aws_ecr_repository.app.repository_url}:latest",
     image        = "147997118683.dkr.ecr.us-east-1.amazonaws.com/dev/ecr01:latest",
     essential    = true,
     portMappings = [{ containerPort = 80, hostPort = 80 }],
 
-    entryPoint   = ["/bin/sh", "-c"],
-    command       = [
-      "aws s3 sync s3://nocping-ecs-bucket  /data"
-    ],
-
-   # mountPoints = [
-   #   {
-   #     containerPath = "/data",
-   #     sourceVolume  = "my-data-volume"
-   #   }
-   # ],
-
     environment = [
-      { name = "example", value = "nocping" }
-    ],
+      { name = "EXAMPLE", value = "nocping" }
+    ]
 
     logConfiguration = {
       logDriver = "awslogs",
@@ -70,13 +60,4 @@ resource "aws_ecs_task_definition" "app" {
       }
     },
   }])
-
-#  volume = [
-#    {
-#      name = "my-data-volume",
-#      host = {
-#        sourcePath = "/mnt"        # Ensure this directory exists on the host
-#      }
-#    }
-#  ]
 }
