@@ -31,7 +31,6 @@ resource "aws_launch_template" "ecs_ec2" {
 }
 
 # --- ECS Task Definition ---
-
 resource "aws_ecs_task_definition" "app" {
   family             = "nocping-app"
   task_role_arn      = aws_iam_role.ecs_task_role.arn
@@ -46,13 +45,20 @@ resource "aws_ecs_task_definition" "app" {
     essential    = true,
     portMappings = [{ containerPort = 80, hostPort = 80 }],
 
+    entryPoint   = ["/bin/sh", "-c"],
+    command       = [
+      "aws s3 sync s3://nocping-ecs-bucket  /opt"
+    ],
+
+    mountPoints = [
+      {
+        containerPath = "/opt",
+        sourceVolume  = "my-data-volume"
+      }
+    ],
+
     environment = [
-      { name = "EXAMPLE", value = "nocping" }
-    ]
-    
-    # Pass S3 bucket name as environment variable
-    environment = [
-      { name = "S3_BUCKET", value = aws_s3_bucket.nocping_bucket.bucket }
+      { name = "example", value = "nocping" }
     ],
 
     logConfiguration = {
@@ -64,4 +70,13 @@ resource "aws_ecs_task_definition" "app" {
       }
     },
   }])
+
+  volumes = [
+    {
+      name = "my-data-volume",
+      host = {
+        sourcePath = "/mnt"        # Ensure this directory exists on the host
+      }
+    }
+  ]
 }
