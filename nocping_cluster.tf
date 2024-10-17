@@ -47,12 +47,12 @@ resource "aws_ecs_task_definition" "app" {
 
     entryPoint   = ["/bin/sh", "-c"],
     command       = [
-      "aws s3 sync s3://nocping-ecs-bucket  /opt"
+      "aws s3 sync s3://nocping-ecs-bucket  /data"
     ],
 
     mountPoints = [
       {
-        containerPath = "/opt",
+        containerPath = "/data",
         sourceVolume  = "my-data-volume"
       }
     ],
@@ -71,12 +71,12 @@ resource "aws_ecs_task_definition" "app" {
     },
   }])
 
-  volumes = [
-    {
-      name = "my-data-volume",
-      host = {
-        sourcePath = "/mnt"        # Ensure this directory exists on the host
-      }
-    }
-  ]
-}
+#  volumes = [
+#    {
+#      name = "my-data-volume",
+#      host = {
+#        sourcePath = "/mnt"        # Ensure this directory exists on the host
+#      }
+#    }
+#  ]
+#}
