@@ -50,12 +50,12 @@ resource "aws_ecs_task_definition" "app" {
       "aws s3 sync s3://nocping-ecs-bucket  /data"
     ],
 
-    mountPoints = [
-      {
-        containerPath = "/data",
-        sourceVolume  = "my-data-volume"
-      }
-    ],
+   # mountPoints = [
+   #   {
+   #     containerPath = "/data",
+   #     sourceVolume  = "my-data-volume"
+   #   }
+   # ],
 
     environment = [
       { name = "example", value = "nocping" }
@@ -71,7 +71,7 @@ resource "aws_ecs_task_definition" "app" {
     },
   }])
 
-#  volumes = [
+#  volume = [
 #    {
 #      name = "my-data-volume",
 #      host = {
