@@ -42,7 +42,6 @@ resource "aws_ecs_task_definition" "app" {
 
   container_definitions = jsonencode([{
     name         = "nocping",
-#   image        = "${aws_ecr_repository.app.repository_url}:latest",
     image        = "147997118683.dkr.ecr.us-east-1.amazonaws.com/dev/ecr01:latest",
     essential    = true,
     portMappings = [{ containerPort = 80, hostPort = 80 }],
@@ -50,6 +49,11 @@ resource "aws_ecs_task_definition" "app" {
     environment = [
       { name = "EXAMPLE", value = "nocping" }
     ]
+    
+    # Pass S3 bucket name as environment variable
+    environment = [
+      { name = "S3_BUCKET", value = aws_s3_bucket.nocping_bucket.bucket }
+    ],
 
     logConfiguration = {
       logDriver = "awslogs",
