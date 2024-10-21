@@ -50,7 +50,18 @@ resource "aws_ecs_task_definition" "app" {
     environment = [
       { name = "EXAMPLE", value = "nocping" }
     ]
-
+    
+    secrets = [
+      {
+        name      = "AU_EPP_USER"
+        valueFrom = aws_ssm_parameter.icinga_cctld_au_epp_user.arn 
+      },
+      {
+        name      = "AU_EPP_PASS"
+        valueFrom = aws_ssm_parameter.icinga_cctld_au_epp_password.arn 
+      }
+    ]       
+ 
     logConfiguration = {
       logDriver = "awslogs",
       options = {
