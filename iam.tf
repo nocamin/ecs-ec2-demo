@@ -22,9 +22,9 @@ resource "aws_iam_role_policy_attachment" "ecs_node_role_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_ssm_policy" {
+resource "aws_iam_role_policy_attachment" "ecs_node_ssm_policy" {
   role       = aws_iam_role.ecs_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"  # Predefined SSM policy
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"  # Predefined SSM policy for Instance
 }
 
 resource "aws_iam_policy" "ecs_eip_assoc" {
@@ -86,6 +86,11 @@ resource "aws_iam_role" "ecs_task_role" {
 resource "aws_iam_role" "ecs_exec_role" {
   name_prefix        = "demo-ecs-exec-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_doc.json
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_ssm_policy" {
+  role       = aws_iam_role.ecs_exec_role.name                 
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"   # Predefined SSM policy for task
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_exec_role_policy" {
