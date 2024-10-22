@@ -56,6 +56,24 @@ resource "aws_iam_role_policy_attachment" "ecs_eip_assoc" {
   policy_arn = aws_iam_policy.ecs_eip_assoc.arn  # Custom EIP policy
 }
 
+resource "aws_iam_policy" "observability_s3" {
+  name   = "observability-s3"
+  policy = jsonencode({
+    Version   = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:*",
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "observability_s3" {
+  role       = aws_iam_role.ecs_node_role.name
+  policy_arn = aws_iam_policy.observability_s3.arn    # Custom S3 Policy
+}
 
 resource "aws_iam_instance_profile" "ecs_node" {
   name_prefix = "demo-ecs-node-profile"

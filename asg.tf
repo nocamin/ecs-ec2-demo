@@ -25,6 +25,12 @@ resource "aws_autoscaling_group" "ecs" {
     value               = ""
     propagate_at_launch = true
   }
+  
+  tag {
+    key                 = "SSMAssociation"  
+    value               = "${var.environment}-ssm-association" 
+    propagate_at_launch = true
+  }
 }
 
 

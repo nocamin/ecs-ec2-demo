@@ -37,6 +37,10 @@ resource "aws_ecs_task_definition" "app" {
   task_role_arn      = aws_iam_role.ecs_task_role.arn
   execution_role_arn = aws_iam_role.ecs_exec_role.arn
   network_mode       = "host"
+  volume {
+    name      = "s3-data"
+    host_path = "/opt/observability/nocping/certs"
+  }
   cpu                = 256
   memory             = 256
 
@@ -46,7 +50,12 @@ resource "aws_ecs_task_definition" "app" {
     image        = "147997118683.dkr.ecr.us-east-1.amazonaws.com/dev/ecr01:latest",
     essential    = true,
     portMappings = [{ containerPort = 80, hostPort = 80 }],
-
+    
+    mountPoints = [{
+      sourceVolume = "s3-data",
+      containerPath = "/certs"
+    }] 
+   
     environment = [
       { name = "EXAMPLE", value = "nocping" }
     ]
