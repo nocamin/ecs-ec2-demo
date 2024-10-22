@@ -1,12 +1,21 @@
 resource "aws_s3_bucket" "nocping" {
   bucket = "${var.aws_account_id}-${var.aws_region}-observability-apps"
-  acl    = "private"
-  
-  versioning {
-    enabled = true
-  }
+
   tags = {
     Name        = "nocping"
     Environment = "Dev"
   }
 }
+
+#resource "aws_s3_bucket_acl" "my_bucket_acl" {
+#  bucket = aws_s3_bucket.nocping.id
+#  acl    = "private"
+#}
+
+#resource "aws_s3_bucket_versioning" "my_bucket_versioning" {
+#  bucket = aws_s3_bucket.my_bucket.id
+#
+#  versioning_configuration {
+#    enabled = true
+#  }
+#}
