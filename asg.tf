@@ -36,7 +36,7 @@ resource "aws_autoscaling_group" "ecs" {
 
 # --- EIP ASSOCIATION WITH EC2 ---
 
-data "aws_autoscaling_group" "asg_instances" {
+data "aws_autoscaling_group" "ecs" {
   name = aws_autoscaling_group.ecs.name
 }
 
