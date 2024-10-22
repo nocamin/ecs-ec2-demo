@@ -52,8 +52,9 @@ resource "aws_ecs_task_definition" "app" {
     portMappings = [{ containerPort = 80, hostPort = 80 }],
     
     mountPoints = [{
-      sourceVolume = "s3-data",
+      sourceVolume  = "s3-data",
       containerPath = "/certs"
+#     readOnly      =  true
     }] 
    
     environment = [
