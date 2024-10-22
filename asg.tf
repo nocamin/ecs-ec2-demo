@@ -50,6 +50,7 @@ resource "aws_eip_association" "ecs_eip_assoc" {
   count         = local.azs_count
   allocation_id = aws_eip.main[count.index].id
 # instance_id   = element(data.aws_instances.asg_instances_data.ids, count.index)
-  instance_id   = element(aws_autoscaling_group.ecs.name, count.index)
+# instance_id   = element(aws_autoscaling_group.ecs.name, count.index)
+  instance_id   = element(data.aws_autoscaling_group.ecs.instances, count.index)
   depends_on    = [aws_autoscaling_group.ecs]
 }
