@@ -33,12 +33,6 @@ resource "aws_internet_gateway" "main" {
   tags   = { Name = "demo-igw" }
 }
 
-resource "aws_eip" "main" {
-  count      = local.azs_count
-  domain     = "vpc"      # VPC based Elastic IP
-  depends_on = [aws_internet_gateway.main]
-  tags       = { Name = "demo-eip-${local.azs_names[count.index]}" }
-}
 
 # --- Public Route Table ---
 
@@ -61,4 +55,30 @@ resource "aws_route_table_association" "public" {
   count          = local.azs_count
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
+}
+
+# --- ENI CREATION FOR EACH AZ ---
+
+resource "aws_network_interface" "main" {
+  count      = local.azs_count
+  subnet_id  = aws_subnet.public[count.index].id          # Use one ENI per public subnet
+  description = "ENI for ECS EC2 instances in ${local.azs_names[count.index]}"
+  tags       = { Name = "demo-eni-${local.azs_names[count.index]}" }
+}
+
+# --- EIP CREATION  ---
+
+resource "aws_eip" "main" {
+  count      = local.azs_count
+  domain     = "vpc"  # VPC-based Elastic IP
+  depends_on = [aws_internet_gateway.main]  # Ensures IGW is created first
+  tags       = { Name = "demo-eip-${local.azs_names[count.index]}" }
+}
+
+# --- EIP ASSOCIATION TO ENI ---
+
+resource "aws_eip_association" "eni_eip_assoc" {
+  count                = local.azs_count
+  allocation_id        = aws_eip.main[count.index].id  # Attach each EIP to its respective ENI
+  network_interface_id = aws_network_interface.main[count.index].id
 }

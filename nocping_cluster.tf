@@ -18,8 +18,14 @@ resource "aws_launch_template" "ecs_ec2" {
 
   iam_instance_profile { arn = aws_iam_instance_profile.ecs_node.arn }
   monitoring { enabled = true }
- 
+  
+ # --- Attach the pre-created ENI to instance ---
 
+  network_interfaces {
+    network_interface_id = aws_network_interface.main[0].id   
+    device_index         = 0
+  }
+  
   user_data = base64encode(<<-EOF
       #!/bin/bash
       echo ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config;
