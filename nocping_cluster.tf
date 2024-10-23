@@ -30,8 +30,6 @@ resource "aws_launch_template" "ecs_ec2" {
       INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
       ALLOCATION_ID=$(aws ec2 describe-addresses --query 'Addresses[?starts_with(AllocationId, `eipalloc-`)].AllocationId' --region {var.aws_region} --output text)
       aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id $ALLOCATION_ID --region {var.aws_region}
-
-#aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id ${aws_eip.main[count.index].id} --region ${var.aws_region}
     EOF
   )
 }
