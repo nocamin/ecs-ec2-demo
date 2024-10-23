@@ -29,7 +29,7 @@ resource "aws_launch_template" "ecs_ec2" {
        # Get Instance ID
       INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
       # Associate EIP
-      aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id ${aws_eip.main[0].id} --region ${var.aws_region}
+      aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id ${aws_eip.main[count.index].id} --region ${var.aws_region}
     EOF
   )
 }
@@ -50,7 +50,6 @@ resource "aws_ecs_task_definition" "app" {
 
   container_definitions = jsonencode([{
     name         = "nocping",
-#   image        = "${aws_ecr_repository.app.repository_url}:latest",
     image        = "147997118683.dkr.ecr.us-east-1.amazonaws.com/dev/ecr01:latest",
     essential    = true,
     portMappings = [{ containerPort = 80, hostPort = 80 }],
