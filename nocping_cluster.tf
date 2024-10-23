@@ -14,22 +14,22 @@ resource "aws_launch_template" "ecs_ec2" {
   name_prefix            = "demo-ecs-ec2-"
   image_id               = data.aws_ssm_parameter.ecs_node_ami.value
   instance_type          = "t2.micro"
- 
- # --- Attach the pre-created ENI to instance ---
- # network_interfaces {
- #   network_interface_id = aws_network_interface.main[0].id
- #   device_index         = 0
- # }
+  vpc_security_group_ids = [aws_security_group.ecs_node_sg.id]
 
   iam_instance_profile { arn = aws_iam_instance_profile.ecs_node.arn }
   monitoring { enabled = true }
-  
+ 
+
   user_data = base64encode(<<-EOF
       #!/bin/bash
       echo ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config;
        yum install -y amazon-ssm-agent
        systemctl enable amazon-ssm-agent
        systemctl start amazon-ssm-agent
+       # Get Instance ID
+      INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+      # Associate EIP
+      aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id ${aws_eip.main[0].id} --region ${var.aws_region}
     EOF
   )
 }
