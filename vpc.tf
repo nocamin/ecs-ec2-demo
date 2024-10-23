@@ -62,6 +62,7 @@ resource "aws_route_table_association" "public" {
 resource "aws_network_interface" "main" {
   count      = local.azs_count
   subnet_id  = aws_subnet.public[count.index].id          # Use one ENI per public subnet
+  security_groups = [aws_security_group.ecs_node_sg.id]
   description = "ENI for ECS EC2 instances in ${local.azs_names[count.index]}"
   tags       = { Name = "demo-eni-${local.azs_names[count.index]}" }
 }
