@@ -35,20 +35,20 @@ resource "aws_autoscaling_group" "ecs" {
 
 
 # --- EIP ASSOCIATION WITH EC2 ---
-
-data "aws_autoscaling_group" "asg_instances" {
-  name = aws_autoscaling_group.ecs.name
-}
-
-data "aws_instances" "asg_instances_data" {
-  instance_tags = {
-    "aws:autoscaling:groupName" = aws_autoscaling_group.ecs.name
-  }
-}
-
-resource "aws_eip_association" "ecs_eip_assoc" {
-  count         = local.azs_count
-  allocation_id = aws_eip.main[count.index].id
-  instance_id   = element(data.aws_instances.asg_instances_data.ids, count.index)
-  depends_on    = [aws_autoscaling_group.ecs]
-}
+#
+#data "aws_autoscaling_group" "asg_instances" {
+#  name = aws_autoscaling_group.ecs.name
+#}
+#
+#data "aws_instances" "asg_instances_data" {
+#  instance_tags = {
+#    "aws:autoscaling:groupName" = aws_autoscaling_group.ecs.name
+#  }
+#}
+#
+#resource "aws_eip_association" "ecs_eip_assoc" {
+#  count         = local.azs_count
+#  allocation_id = aws_eip.main[count.index].id
+#  instance_id   = element(data.aws_instances.asg_instances_data.ids, count.index)
+#  depends_on    = [aws_autoscaling_group.ecs]
+#}
