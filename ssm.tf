@@ -33,7 +33,7 @@ resource "aws_ssm_document" "associate_eip" {
         "runCommand": [
           "INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)",
           "aws ec2 wait instance-running --instance-id $INSTANCE_ID",
-          "aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id ${aws_eip.main[count.index].id} --allow-reassociation"
+          "aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id ${aws_eip.main[0].id} --allow-reassociation"
         ]
       }
     }
