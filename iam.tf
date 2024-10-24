@@ -36,6 +36,8 @@ resource "aws_iam_policy" "ecs_eip_assoc" {
     Statement = [
       {
         Action = [
+          "ssm:SendCommand",
+          "ssm:DescribeInstanceInformation",
           "ec2:AssociateAddress",
           "ec2:DisassociateAddress",
           "ec2:AllocateAddress",
