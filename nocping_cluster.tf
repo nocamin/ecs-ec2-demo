@@ -26,10 +26,6 @@ resource "aws_launch_template" "ecs_ec2" {
        yum install -y amazon-ssm-agent
        systemctl enable amazon-ssm-agent
        systemctl start amazon-ssm-agent
-      
-      INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-      ALLOCATION_ID=$(aws ec2 describe-addresses --query 'Addresses[?starts_with(AllocationId, `eipalloc-`)].AllocationId' --region us-east-1 --output text)
-      aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id $ALLOCATION_ID --region us-east-1
     EOF
   )
 }
@@ -50,6 +46,7 @@ resource "aws_ecs_task_definition" "app" {
 
   container_definitions = jsonencode([{
     name         = "nocping",
+#   image        = "${aws_ecr_repository.app.repository_url}:latest",
     image        = "147997118683.dkr.ecr.us-east-1.amazonaws.com/dev/ecr01:latest",
     essential    = true,
     portMappings = [{ containerPort = 80, hostPort = 80 }],

@@ -1,7 +1,7 @@
 resource "aws_ssm_association" "observability" {
   name                = "AWS-RunShellScript"
   association_name    = "nocping-observability-apps-s3"
-  schedule_expression = "rate(60 minutes)"
+  schedule_expression = "rate(30 minutes)"
 
   targets {
     key    = "tag:SSMAssociation"
