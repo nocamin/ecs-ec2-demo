@@ -3,31 +3,10 @@ variable "regions" {
   default = ["us-east-1", "us-east-2", "us-west-1", "us-west-2", "eu-west-1", "ap-southeast-1", "ap-northeast-1"]
 }
 
-variable "aws_account_id" {
-  type        = string
-  description = "AWS account ID"
-  default     = "147997118683"
-}
-
-variable "environment" {
-  description = "Environment name."
-  type        = string
-  default     = "dev"
-}
-
-variable "icinga_cctld_au_epp_user" {
-  description = "The Icinga Testing CCTLD.AU EPP Username"
-  type        = string
-}
-
-variable "icinga_cctld_au_epp_password" {
-  description = "The Icinga Testing CCTLD.AU EPP Password"
-  type        = string
-  sensitive   = true
-}
 
 module "ecs_cluster" {
-  for_each = { for region in var.regions : region => region }
+
+  #for_each = { for region in var.regions : region => region }
 
   source = "./modules/nocping_ecs"
 
