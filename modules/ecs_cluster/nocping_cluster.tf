@@ -1,11 +1,3 @@
-module "vpc" {
-  source = "../vpc"
-}
-
-module "global" {
-  source = "../global"
-}
-
 # --- ECS Cluster ---
 
 resource "aws_ecs_cluster" "main" {

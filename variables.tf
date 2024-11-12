@@ -9,12 +9,6 @@ variable "icinga_cctld_au_epp_password" {
   sensitive   = true
 }
 
-variable "environment" {
-  description = "Environment name"
-  type        = string
-  default     = "dev"
-}
-
 variable "aws_account_id" {
   type        = string
   description = "AWS account id"
@@ -27,4 +21,8 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-
+variable "environment" {
+  description = "Environment name."
+  type        = string
+  default     = "dev"
+}
