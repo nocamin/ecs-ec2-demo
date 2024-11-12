@@ -1,9 +1,13 @@
 module "vpc" {
   source = "./modules/vpc"
-  providers = {
-    aws = aws
-  }
+  providers = { aws = aws }
 }
+
+module "global_s3" {
+  source = "./modules/global/s3"
+  providers = { aws = aws }
+}
+   
 
 module "ecs_cluster_us_east_1" {
   source    = "./modules/ecs_cluster"
@@ -25,7 +29,4 @@ module "ecs_cluster_us_west_2" {
   providers = { aws = aws.us-west-2 }
 }
 
-module "global_s3" {
-  source = "./modules/global/s3"
-  providers = { aws = aws }
-}
+
