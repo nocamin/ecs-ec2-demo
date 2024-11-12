@@ -12,7 +12,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   assign_generated_ipv6_cidr_block = true
-  tags                 = { Name = "demo-vpc" }
+  tags                 = { Name = "${var.environment}-vpc" }
 }
 
 resource "aws_subnet" "public" {
@@ -23,28 +23,28 @@ resource "aws_subnet" "public" {
   ipv6_cidr_block         = cidrsubnet(aws_vpc.main.ipv6_cidr_block, 8, count.index)
   map_public_ip_on_launch = false
   assign_ipv6_address_on_creation = true
-  tags                    = { Name = "demo-public-${local.azs_names[count.index]}" }
+  tags                    = { Name = "${var.environment}-public-${local.azs_names[count.index]}" }
 }
 
 # --- Internet Gateway ---
 
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
-  tags   = { Name = "demo-igw" }
+  tags   = { Name = "${var.environment}-igw" }
 }
 
 resource "aws_eip" "main" {
   count      = local.azs_count
   domain     = "vpc"      # VPC based Elastic IP
   depends_on = [aws_internet_gateway.main]
-  tags       = { Name = "demo-eip-${local.azs_names[count.index]}" }
+  tags       = { Name = "${var.environment}-eip-${local.azs_names[count.index]}" }
 }
 
 # --- Public Route Table ---
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
-  tags   = { Name = "demo-rt-public" }
+  tags   = { Name = "${var.environment}-rt-public" }
 
   route {
     cidr_block = "0.0.0.0/0"

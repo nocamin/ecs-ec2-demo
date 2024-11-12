@@ -1,28 +1,27 @@
-variable "icinga_cctld_au_epp_user" {
-  description = "The Icinga Testing CCTLD.AU EPP Username"
-  type        = string
-}
-
-variable "icinga_cctld_au_epp_password" {
-  description = "The Icinga Testing CCTLD.AU EPP Password"
-  type        = string
-  sensitive   = true
-}
-
-variable "aws_account_id" {
-  type        = string
-  description = "AWS account id"
-  default     = "147997118683"
-}
-
-variable "aws_region" {
-  description = "AWS account region."
-  type        = string
+variable "primary_region" {
+  description = "Primary AWS region"
   default     = "us-east-1"
 }
 
+variable "secondary_region" {
+  description = "Secondary AWS region"
+  default     = "us-west-2"
+}
+
 variable "environment" {
-  description = "Environment name."
+  description = "Environment name"
   type        = string
   default     = "dev"
 }
+
+variable "aws_account_id" {
+  description = "AWS Account ID"
+  type        = string
+}
+
+
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+}
+
