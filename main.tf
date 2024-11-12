@@ -1,5 +1,5 @@
-module "networking" {
-  source = "./modules/networking"
+module "vpc" {
+  source = "./modules/vpc"
   providers = {
     aws = aws
   }
@@ -26,6 +26,6 @@ module "ecs_cluster_us_west_2" {
 }
 
 module "global_s3" {
-  source = "./global/s3"
+  source = "./modules/global/s3"
   providers = { aws = aws }
 }

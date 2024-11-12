@@ -1,5 +1,5 @@
-module "networking" {
-  source = "../networking"
+module "vpc" {
+  source = "../vpc"
 }
 
 module "global" {
