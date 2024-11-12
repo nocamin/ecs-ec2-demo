@@ -1,13 +1,3 @@
-variable "primary_region" {
-  description = "Primary AWS region"
-  default     = "us-east-1"
-}
-
-variable "secondary_region" {
-  description = "Secondary AWS region"
-  default     = "us-west-2"
-}
-
 variable "environment" {
   description = "Environment name"
   type        = string
@@ -15,13 +5,15 @@ variable "environment" {
 }
 
 variable "aws_account_id" {
-  description = "AWS Account ID"
   type        = string
+  description = "AWS account id"
+  default     = "147997118683"
 }
-
 
 variable "aws_region" {
-  description = "AWS region"
+  description = "AWS account region."
   type        = string
+  default     = "us-east-1"
 }
+
 
