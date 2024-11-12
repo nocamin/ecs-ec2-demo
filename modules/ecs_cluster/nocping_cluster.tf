@@ -1,3 +1,15 @@
+module "networking" {
+  source = "../networking"
+}
+
+module "global" {
+  source = "../global"
+}
+
+resource "aws_security_group" "ecs_task" {
+  vpc_id = module.networking.vpc_id
+}
+
 # --- ECS Cluster ---
 
 resource "aws_ecs_cluster" "main" {
