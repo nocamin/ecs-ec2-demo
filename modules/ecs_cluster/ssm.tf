@@ -12,7 +12,7 @@ resource "aws_ssm_association" "observability" {
     commands = join(" && ", [
       "yum install -y awscli",
       "mkdir -p /opt/observability/nocping/certs",
-      "aws s3 sync s3://${aws_s3_bucket.nocping.bucket}/certs /opt/observability/nocping/certs"
+      "aws s3 sync s3://${aws_s3_bucket.nocping[count.index].bucket}/certs /opt/observability/nocping/certs"
     ])
   }
 }
