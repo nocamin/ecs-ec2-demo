@@ -26,3 +26,13 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
+
+variable "region" {
+  description = "The region for the provider using this module."
+  type        = string
+}
+
+variable "bucket_region" {
+  description = "The region where the S3 bucket should be created."
+  type        = string
+}

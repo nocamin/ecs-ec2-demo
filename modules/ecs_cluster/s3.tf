@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "nocping" {
   bucket = "${var.aws_account_id}-${var.aws_region}-observability-apps"
-  count  = var.region == var.aws_region ? 1 : 0
+  count  = var.region == var.bucket_region ? 1 : 0
   tags = {
     Name        = "nocping"
     Environment = "Dev"
