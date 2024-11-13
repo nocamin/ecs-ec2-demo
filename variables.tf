@@ -33,7 +33,3 @@ variable "bucket_region" {
   default     = "us-east-1"  # Default region for the S3 bucket
 }
 
-variable "s3_bucket_name" {
-  description = "S3 bucket name for the nocping service."
-  type        = string
-}
