@@ -27,12 +27,9 @@ variable "environment" {
   default     = "dev"
 }
 
-variable "region" {
-  description = "The region for the provider using this module."
-  type        = string
-}
 
-variable "bucket_region" {
-  description = "The region where the S3 bucket should be created."
+
+variable "s3_bucket_name" {
+  description = "S3 bucket name for the nocping service."
   type        = string
 }
