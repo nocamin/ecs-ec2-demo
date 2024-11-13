@@ -30,5 +30,10 @@ variable "environment" {
 variable "bucket_region" {
   description = "Region where the S3 bucket will be created"
   type        = string
-  default     = "us-east-1"  # Default region for the S3 bucket
+  default     = "us-east-1"  # Default region for the S3 bucket creation
 }
+
+#variable "s3_bucket_name" {
+#  description = "S3 bucket name for the nocping service."
+#  type        = string
+#}
