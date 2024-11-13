@@ -32,4 +32,3 @@ variable "bucket_region" {
   type        = string
   default     = "us-east-1"  # Default region for the S3 bucket
 }
-
