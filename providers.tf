@@ -5,7 +5,7 @@ terraform {
 }
 
 provider "aws" {
-  region = var.aws_region  # Default provider configuration
+  region = var.aws_region 
 }
 
 provider "aws" {
