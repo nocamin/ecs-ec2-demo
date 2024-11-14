@@ -30,6 +30,6 @@ variable "environment" {
 variable "bucket_region" {
   description = "Region where the S3 bucket will be created"
   type        = string
-  default     = "us-east-1"  # Default region for the S3 bucket creation
+  default     = "us-east-1" 
 }
 
