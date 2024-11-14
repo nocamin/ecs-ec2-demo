@@ -27,10 +27,10 @@ variable "environment" {
   default     = "dev"
 }
 
-variable "bucket_region" {
-  description = "Region where the S3 bucket will be created"
-  type        = string
-}
+#variable "bucket_region" {
+#  description = "Region where the S3 bucket will be created"
+#  type        = string
+#}
 
 variable "s3_bucket_name" {
   description = "The name of the S3 bucket to sync"
