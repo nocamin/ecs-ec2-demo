@@ -27,9 +27,9 @@ variable "environment" {
   default     = "dev"
 }
 
-variable "bucket_region" {
-  description = "Region where the S3 bucket will be created"
-  type        = string
-  default     = "us-east-1" 
-}
+#variable "bucket_region" {
+#  description = "Region where the S3 bucket will be created"
+#  type        = string
+#  default     = "us-east-1" 
+#}
 
